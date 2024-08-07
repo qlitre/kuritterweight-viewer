@@ -1,10 +1,12 @@
 import { html } from 'hono/html'
 
 type Data = {
-  xList: string[]
+  xList: number[]
   yList: number[]
   children?: any
 }
+
+
 
 export const Layout = (props: Data) => html`<!DOCTYPE html>
 <html lang="ja">
@@ -12,6 +14,7 @@ export const Layout = (props: Data) => html`<!DOCTYPE html>
   <meta charset="utf-8" />
   <title>kuritterweight-viewer</title>
   <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css" />
+  <link rel="stylesheet" href="/static/style.css" />
   </head>
   <body>
   ${props.children}
@@ -19,8 +22,8 @@ export const Layout = (props: Data) => html`<!DOCTYPE html>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>    
   <script>
     const ctx = document.getElementById('myChart');
-    const timestamps = [1,2,3];
-    const weightValues = [50,60,70];
+    const timestamps = ${JSON.stringify(props.xList)};
+    const weightValues = ${JSON.stringify(props.yList)};
     new Chart(ctx, {
       type: 'line',
       data: {
@@ -35,7 +38,7 @@ export const Layout = (props: Data) => html`<!DOCTYPE html>
         scales: {
           y: {
             beginAtZero: true,
-            min: 50,
+            min: 55,
             max: 70
           }
         }
@@ -51,14 +54,13 @@ export const HomeContent = (props: {
     <header>
       <h1>kuritterweight-viewer</h1>
       <nav>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/blog">Blog</a>
-        <a href="/notes">Notes</a>
-        <a href="/guestbook">Guestbook</a>
-        <a href="/contact">Contact</a>
+        <a href="/?days=30">30日</a>
+        <a href="/?days=90">90日</a>
+        <a href="/?days=365">365日</a>
       </nav>
     </header>
-    <canvas id="myChart"></canvas>
+    <main>
+      <canvas id="myChart"></canvas>
+    </main>
   </Layout>
 )
